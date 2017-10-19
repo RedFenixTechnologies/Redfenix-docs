@@ -2,10 +2,8 @@
 title: API Reference
 
 language_tabs: # must be one of https://git.io/vQNgJ
-  - shell
-  - ruby
   - python
-  - javascript
+  - shell
 
 toc_footers:
   - <a href='#'>Sign Up for a Developer Key</a>
@@ -16,18 +14,18 @@ includes:
 
 search: true
 ---
+<!-- - ruby -->
+# Introducción
 
-# Introduction
+Integra las aplicaciones de redfenix con F-API. Este API de Redfenix te permite obtener Ads para cuando un user se conecte a los sitios, crear nuevos sitios, editarlos, eliminarlos. Además de operaciones similares para los Ads (Pautas).
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+Está diseñado como un servicio web REST. Para comunicarte con nuestra API sólo necesitas cualquier lenguaje que provea un cliente HTTP.
 
-We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+Todos las operaciones responden en formato JSON, incluso los errores.
 
-This example API documentation page was created with [Slate](https://github.com/tripit/slate). Feel free to edit it and use it as a base for your own API's documentation.
+# Authenticación
 
-# Authentication
-
-> To authorize, use this code:
+<!-- > To authorize, use this code:
 
 ```ruby
 require 'kittn'
@@ -52,142 +50,97 @@ const kittn = require('kittn');
 
 let api = kittn.authorize('meowmeowmeow');
 ```
+-->
 
-> Make sure to replace `meowmeowmeow` with your API key.
+Para obtener tu clave del API deberás solicitarla al equipo de desarrollo de Redfenix, posteriormente la podrás obtener directamente desde nuestro administrador.
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+Nuestra API espera que en el encabezado de cada request se le envíe el siguiente atributo:
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
-
-`Authorization: meowmeowmeow`
+`Authorization: apiKeyGenerated`
 
 <aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
+Debes reemplazar <code>apiKeyGenerated</code> con tu API key personal.
 </aside>
 
-# Kittens
+# Ads
 
-## Get All Kittens
+## Obtener Ads de un Sitio
 
-```ruby
+<!-- ```ruby
 require 'kittn'
 
 api = Kittn::APIClient.authorize!('meowmeowmeow')
 api.kittens.get
-```
+``` -->
 
 ```python
-import kittn
+import requests
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
+url = "https://f-api.redfenix.ec/ads"
+
+querystring = {"user":"BB:BB:BB:BB:BB:C0","site":"dnsofsite.redfenix.ec","ip_local":"127.0.0.1"}
+
+headers = {'authorization': 'apiKeyGenerated'}
+
+response = requests.request("GET", url, headers=headers, params=querystring)
+
+print(response.text)
+
 ```
 
 ```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
-```
-
-> The above command returns JSON structured like this:
-
-```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
-```
-
-This endpoint retrieves all kittens.
-
-### HTTP Request
-
-`GET http://example.com/api/kittens`
-
-### Query Parameters
-
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-## Get a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
+curl --request GET \
+  --url 'https://f-api.redfenix.ec/ads?user=BB:BB:BB:BB:BB:C0&site=dnsofsite.redfenix.ec&ip_local=127.0.0.1' \
+  --header 'authorization: apiKeyGenerated'
 ```
 
 > The above command returns JSON structured like this:
 
 ```json
 {
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+    "typography": "roboto",
+    "src": [
+        "//assets.redfenix.ec/pautas/53/fondo_v.jpg",
+        "//assets.redfenix.ec/pautas/53/fondo_h.jpg",
+        "https://webstyle.unicomm.fsu.edu/img/placeholders/ratio-3-4.png",
+        "https://designshack.net/wp-content/uploads/4-3.jpg"
+    ],
+    "name": "pauta1",
+    "description": "esto es una pauta",
+    "type": "image",
+    "encoding": [
+        "jpg"
+    ],
+    "colors": [
+        "#FFFFFF",
+        "#000000"
+    ],
+    "id": 6259,
+    "siteName": "sitio",
+    "siteLogo": "http://bitlabs.nl/svgmagic/images/results/www.wowdoge.org/logo-wowdoge.png"
 }
 ```
 
-This endpoint retrieves a specific kitten.
-
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+Este endpoint devuelve todos los ads asociados a un sitio*.
 
 ### HTTP Request
 
-`GET http://example.com/kittens/<ID>`
+`GET https://f-api.redfenix.ec/ads`
 
-### URL Parameters
+### Parámetros del query
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
+Parámetro | default | Descripción | Requerido
+--------- | ------- | ----------- | --------
+user | None | identificación del dispositivo de usuario | Yes
+site | None | dns del sitio al que me estoy conectando | Yes
+ip_local | None | ip local del usuario | Yes
+ad_id | None | identificación del Ad específico que se quiere buscar. No necesitas enviar los otros parámetros si éste campo está lleno. | No
 
-## Delete a Specific Kitten
+<aside class="success">
+Recuerda — tus requests deben estar autenticados para poder recibir la respuesta adecuada.
+</aside>
+
+## Borrar un Ad
 
 ```ruby
 require 'kittn'
